@@ -1,3 +1,5 @@
+import { ApolloClient, InMemoryCache } from "@apollo/client";
+
 export interface ImportMetaEnvDev extends ImportMetaEnv {
   VITE_API_URL: string;
   VITE_API_PORT: string;
@@ -6,7 +8,9 @@ export interface ImportMetaEnvDev extends ImportMetaEnv {
 export const getENV = (key: keyof ImportMetaEnvDev) => {
   return import.meta.env[key];
 };
-export const baseURL = `${getENV("VITE_API_URL")}:${getENV("VITE_API_PORT")}`;
+export const baseURL = `http://${getENV("VITE_API_URL")}:${getENV(
+  "VITE_API_PORT"
+)}`;
 
 export const getRequestURL = ({ path = "graphql" }: { path?: string }) => {
   return `${baseURL}/${path}`;
@@ -25,4 +29,12 @@ export const request = <T = unknown>({
       console.log(err);
     });
 };
-0
+
+console.log({
+  requestUrl: getRequestURL({}),
+});
+
+export const client = new ApolloClient({
+  uri: getRequestURL({}),
+  cache: new InMemoryCache(),
+});

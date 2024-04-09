@@ -21,7 +21,7 @@ export const useSome = () => {
 
   useEffect(() => {
     console.log({ loading, error, data });
-  }, []);
+  }, [loading, error, data]);
 
   return {
     ...data,
